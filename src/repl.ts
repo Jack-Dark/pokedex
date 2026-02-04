@@ -1,23 +1,31 @@
 import { createInterface } from "node:readline"
+import { getCommands } from "./get_commands.js";
 
 export function cleanInput(input: string): string[] {
   return input.toLowerCase().trim().split(/\s+/g).filter(Boolean)
 }
 
 export function startREPL() {
-  const int = createInterface({
+  const rl = createInterface({
     input: process.stdin,
     output: process.stdout,
     prompt: 'Which pokemon would you like to know about?\n',
   })
 
-  int.prompt()
-  int.on('line', (input) => {
-    const words = cleanInput(input)
+  rl.prompt()
+  rl.on('line', async (input) => {
+    const words = cleanInput(input);
     if (words.length) {
-      console.log(`Your command was: ${words[0]}`)
+      const firstWord = words[0];
+      const commands = getCommands();
+      if (firstWord in commands) {
+        commands[firstWord].callback({})
+      } else {
+        rl.prompt();
+      }
     } else {
-      int.prompt()
+      rl.prompt();
+      return;
     }
   })
 }
