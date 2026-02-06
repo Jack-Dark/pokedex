@@ -1,6 +1,6 @@
 import { commandExit } from "./command_exit.js";
 import { commandHelp } from "./command_help.js";
-import { CLICommand } from "./commands.types";
+import type { CLICommand } from "./state.js";
 
 
 export function getCommands(): Record<string, CLICommand> {
@@ -16,4 +16,4 @@ export function getCommands(): Record<string, CLICommand> {
       callback: commandHelp,
     },
   };
-}
+} 
